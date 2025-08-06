@@ -1,24 +1,26 @@
-import bcrypt from 'bcrypt';
+import { IEncryption } from '../security/encryption';
 
 export class Password {
-    private _password: string;
+    constructor(private readonly _value: string) { }
 
-    constructor(password: string) {
-        if (this.isValidPassword(password)) throw new Error('The password is not valid.');
-        this._password = password;
+    get value(): string {
+        return this._value;
     }
 
-    private isValidPassword(value: string): boolean {
+    public static async create(value: string, encryption: IEncryption): Promise<Password> {
+        if (this.isValid(value)) throw new Error('The password is not valid.');
+
+        const hash = await encryption.hash(value);
+        return new Password(hash);
+    }
+
+    private static isValid(value: string): boolean {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         return regex.test(value);
     }
 
-    public async ecryptPassword(data: string, saltRounds: number) {
-        return await bcrypt.hash(data, saltRounds);
-    }
-
-    public async comparePasswords(data: string, encrypted: string) {
-        return await bcrypt.compare(data, encrypted);
+    public async compareWith(raw: string, encryption: IEncryption): Promise<Boolean> {
+        return await encryption.compare(raw, this._value)
     }
 }

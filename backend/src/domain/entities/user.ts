@@ -2,71 +2,58 @@ import { randomUUID } from "crypto";
 import { Email } from "../value-objects/email";
 import { Password } from "../value-objects/password";
 
-export enum UserRoles {
+export enum EUserRoles {
     ADMIN = 'A',
     MINISTER = 'M',
     VOLUNTARY = 'V'
 }
 
 export class User {
-    private readonly _id?: string;
-    private _role: string;
+    private readonly _id: string;
     private _email: Email;
     private _passwordHashed: Password;
     private _name: string;
+    private _role: string;
     private readonly _createdAt: Date;
 
-    constructor(email: string, name: string, password: string, id?: string) {
+    constructor(name: string, email: string, password: string, id?: string, role?: EUserRoles, createdAt?: Date) {
         this._email = new Email(email);
         this._name = name;
         this._passwordHashed = new Password(password);
         this._id = id ?? randomUUID();
         this._createdAt = new Date();
-
-        if (this.firstAccess(this._id)) this._role = UserRoles.ADMIN;
-        this._role = '';
+        this._role = role ?? EUserRoles.VOLUNTARY
     }
 
-    public save() {
-        //TODO: Criar lógica para salvar usuário
+    get id() {
+        return this._id
     }
 
-    private firstAccess(id: string): boolean {
-        if (!id) return false;
-        return true;
+    get name() {
+        return this._name
     }
 
-    public registerMinister() {
-        this._role = UserRoles.MINISTER;
-        //TODO: Criar lógica para registrar ministro
+    get email() {
+        return this._email
     }
 
-    public registerVoluntary() {
-        this._role = UserRoles.VOLUNTARY;
-        //TODO: Criar lógica para registrar voluntario
+    get role() {
+        return this._role
     }
 
-    public changePassword() {
-        //TODO: Criar lógica para mudar senha
+    get password() {
+        return this._passwordHashed
     }
 
-    public changeEmail() {
-        //TODO: Criar lógica para mudar email
+    get createdAt() {
+        return this._createdAt
     }
 
-    public registerChurch() {
-        //TODO: Criar lógica para registrar Igreja
+    public changePassword(value: string) {
+        return new Password(value);
     }
 
-    public createMinistery() {
-        //TODO: Criar lógica para criar Ministério
-    }
-
-    public createSchedule() {
-        //TODO: Criar lógica para criar escala
-    }
-
-    public createEvent() {
-        //TODO: Criar lógica para criar evento
+    public changeEmail(value: string) {
+        return new Email(value);
     }
 }

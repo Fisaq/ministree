@@ -2,7 +2,6 @@ export class Email {
     private _email: string;
 
     constructor(value: string) {
-        console.log(value)
         if (!this.isEmailValid(value)) throw new Error('The email is not a valid email.');
         this._email = value;
     }

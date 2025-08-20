@@ -11,7 +11,6 @@ export class UserRepositoryPrisma implements IUserRepository {
                 email: user.email.value,
                 password: user.password.value,
                 role: user.role,
-                createdAt: user.createdAt,
             }
         });
     }
@@ -48,6 +47,7 @@ export class UserRepositoryPrisma implements IUserRepository {
             data.name,
             data.email,
             data.password,
+            undefined,
             data.id,
             data.role as EUserRoles,
             data.createdAt

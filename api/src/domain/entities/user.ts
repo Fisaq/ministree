@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { IIdGenerator } from "../interfaces/id-generator";
 import { Email } from "../value-objects/email";
 import { Password } from "../value-objects/password";
 
@@ -14,15 +14,22 @@ export class User {
     private _passwordHashed: Password;
     private _name: string;
     private _role: string;
-    private readonly _createdAt: Date;
 
-    constructor(name: string, email: string, password: string, id?: string, role?: EUserRoles, createdAt?: Date) {
+    constructor(
+        name: string,
+        email: string,
+        password: string,
+        idGenerator?: IIdGenerator,
+        id?: string,
+        role?: EUserRoles,
+        createdAt?: Date
+    ) {
         this._email = new Email(email);
         this._name = name;
         this._passwordHashed = new Password(password);
-        this._id = id ?? randomUUID();
-        this._createdAt = new Date();
+        this._id = id ?? idGenerator?.generate() ?? '';
         this._role = role ?? EUserRoles.VOLUNTARY
+        createdAt = new Date();
     }
 
     get id() {
@@ -45,10 +52,6 @@ export class User {
         return this._passwordHashed
     }
 
-    get createdAt() {
-        return this._createdAt
-    }
-
     public changeName(value: string) {
         this._name = value;
     }
@@ -66,16 +69,17 @@ export class User {
         email: string;
         password: string;
         role?: EUserRoles;
-    }): User {
+    }, idGenerator: IIdGenerator): User {
         return new User(
             props.name,
             props.email,
             props.password,
+            idGenerator,
             undefined,
-            props.role ?? EUserRoles.VOLUNTARY,
-            undefined
+            props.role ?? EUserRoles.VOLUNTARY
         );
     }
+
 
     public static restore(props: {
         id: string;
@@ -89,9 +93,9 @@ export class User {
             props.name,
             props.email,
             props.password,
+            undefined,
             props.id,
-            props.role,
-            props.createdAt
+            props.role
         );
     }
 }

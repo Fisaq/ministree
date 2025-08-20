@@ -1,4 +1,4 @@
-import { IEncryption } from '../security/encryption';
+import { IEncryption } from '../interfaces/encryption';
 
 export class Password {
     constructor(private readonly _value: string) { }

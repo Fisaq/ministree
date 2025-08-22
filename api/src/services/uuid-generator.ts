@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto";
-import { IIdGenerator } from "../../domain/interfaces/id-generator";
+import { IIdGenerator } from "../domain/services/id-generator";
 
 export class UUIDGenerator implements IIdGenerator {
-    generate(): string {
+    public generate(): string {
         return randomUUID();
     }
 }

@@ -1,5 +1,5 @@
 import bcrytp from 'bcrypt';
-import { IEncryption } from '../../domain/interfaces/encryption';
+import { IEncryption } from '../domain/services/encryption';
 
 export class BcryptAdapter implements IEncryption {
     constructor(private readonly _salt = 10) { }

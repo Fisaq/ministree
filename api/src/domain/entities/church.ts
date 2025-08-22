@@ -1,4 +1,4 @@
-import { IIdGenerator } from "../interfaces/id-generator";
+import { IIdGenerator } from "../services/id-generator";
 
 export class Church {
     private readonly _id: string;

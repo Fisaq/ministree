@@ -6,5 +6,6 @@ const userController = new UserController();
 
 userRoutes.post('/register', userController.register.bind(userController));
 userRoutes.put('/update/:id', userController.update.bind(userController));
+userRoutes.get('/users/verify-email', userController.verifyEmail.bind(userController));
 
 export default userRoutes;

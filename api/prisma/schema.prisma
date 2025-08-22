@@ -13,11 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AppUser{
+model AppUser {
   id        String   @id @default(uuid())
   name      String
   email     String   @unique
   password  String
-  role      String   @default("VOLUNTARY")
+  role      String
+  status    String   @default("PENDING") // nova coluna
   createdAt DateTime @default(now())
 }

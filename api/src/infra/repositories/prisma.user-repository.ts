@@ -1,4 +1,4 @@
-import { EUserRoles, User } from "../../domain/entities/user";
+import { EUserRoles, EUserStatus, User } from "../../domain/entities/user";
 import { IUserRepository } from "../../domain/repositories/user-repository";
 import { prisma } from "../database/prisma-client";
 
@@ -50,6 +50,7 @@ export class UserRepositoryPrisma implements IUserRepository {
             undefined,
             data.id,
             data.role as EUserRoles,
+            data.status as EUserStatus,
             data.createdAt
         )
     }

@@ -1,4 +1,4 @@
-import { BcryptAdapter } from "../../../../infra/interfaces/bcrypt-adapter";
+import { BcryptAdapter } from "../../../../services/bcrypt-adapter";
 import { IUserRepository } from "../../../repositories/user-repository";
 import { IUpdateUserInput } from "./update-user.dto";
 

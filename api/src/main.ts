@@ -1,12 +1,31 @@
 import express from "express";
-import userRoutes from "./interfaces/routes/user.routes";
+import { bootstrap } from "./config/bootstrap";
+import { UserController } from "./interfaces/controllers/user-controller";
 
-const app = express();
+async function startServer() {
+    const app = express();
+    const PORT = process.env.API_PORT;
+    app.use(express.json());
 
-const PORT = process.env.API_PORT;
+    const {
+        createUserUseCase,
+        updateUserUseCase,
+        verifyEmailUseCase
+    } = await bootstrap();
 
-app.use(express.json());
+    const userController = new UserController(
+        createUserUseCase,
+        updateUserUseCase,
+        verifyEmailUseCase
+    );
 
-app.use('/users', userRoutes);
+    app.post("/users/register", (req, res) => userController.register(req, res));
+    app.put("/users/:id", (req, res) => userController.update(req, res));
+    app.get("/users/verify-email", (req, res) => userController.verifyEmail(req, res));
 
-app.listen(PORT, () => console.info(`Server running on port ${PORT}.`));
+    app.listen(PORT, () => console.info(`Server running on  http://localhost:${PORT}.`));
+}
+
+startServer();
+
+

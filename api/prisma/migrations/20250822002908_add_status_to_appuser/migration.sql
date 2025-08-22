@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "public"."AppUser" ADD COLUMN     "status" TEXT NOT NULL DEFAULT 'PENDING',
+ALTER COLUMN "role" DROP DEFAULT;

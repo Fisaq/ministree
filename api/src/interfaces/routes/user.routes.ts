@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { UserController } from "../controllers/user-controller";
 
-const userRoutes = Router();
-const userController = new UserController();
+export function userRoutes(userController: UserController) {
+    const router = Router();
 
-userRoutes.post('/register', userController.register.bind(userController));
-userRoutes.put('/update/:id', userController.update.bind(userController));
-userRoutes.get('/users/verify-email', userController.verifyEmail.bind(userController));
+    router.post('/register', userController.register.bind(userController));
+    router.put('/update/:id', userController.update.bind(userController));
+    router.get('/verify-email', userController.verifyEmail.bind(userController));
 
-export default userRoutes;
+    return router;
+}

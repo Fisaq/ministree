@@ -110,6 +110,7 @@ export class User {
         email: string;
         password: string;
         role: EUserRoles;
+        status: EUserStatus;
         createdAt: Date;
     }): User {
         return new User(
@@ -118,7 +119,8 @@ export class User {
             props.password,
             undefined,
             props.id,
-            props.role
+            props.role,
+            props.status
         );
     }
 }

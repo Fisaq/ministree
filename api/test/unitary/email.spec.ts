@@ -10,8 +10,8 @@ describe('Plano de Testes - Objeto de Valor Email', () => {
         ];
 
         for (let email of emails) {
-            const resultado = new Email(email);
-            expect(resultado.value).toBe(email);
+            const result = new Email(email);
+            expect(result.value).toBe(email);
         }
     });
 

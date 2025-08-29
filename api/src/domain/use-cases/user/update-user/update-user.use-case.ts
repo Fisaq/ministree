@@ -1,5 +1,6 @@
 import { BcryptAdapter } from "../../../../services/bcrypt-adapter";
 import { IUserRepository } from "../../../repositories/user-repository";
+import { Password } from "../../../value-objects/password";
 import { IUpdateUserInput } from "./update-user.dto";
 
 export class UpdateUserUseCase {
@@ -16,8 +17,11 @@ export class UpdateUserUseCase {
 
         if (data.password !== undefined) {
             const encryption = new BcryptAdapter();
-            const newPassword = await encryption.hash(data.password);
-            user.changePassword(newPassword)
+
+            const newPassword = new Password(data.password);
+            const newPasswordHashed = await encryption.hash(newPassword.value);
+
+            user.changePassword(newPasswordHashed);
         }
 
         return await this._userRepo.update(user);

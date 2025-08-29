@@ -5,6 +5,7 @@ import { IEmailService } from "../../../services/email-service";
 import { ITokenGenerator } from "../../../services/token-generator";
 import { IEncryption } from "../../../services/encryption";
 import { IIdGenerator } from "../../../services/id-generator";
+import { Password } from "../../../value-objects/password";
 
 export class CreateUserUseCase {
     constructor(
@@ -19,7 +20,10 @@ export class CreateUserUseCase {
         const userExisting = await this._userRepo.count();
         const role = userExisting == 0 ? EUserRoles.ADMIN : EUserRoles.VOLUNTARY;
         const status = EUserStatus.PENDING;
-        const passwordHashed = await this._encryption.hash(data.password);
+
+        const newPassword = new Password(data.password);
+        const passwordHashed = await this._encryption.hash(newPassword.value);
+
         const userId = this._uuidGenerator;
 
         const user = User.create({

@@ -1,5 +1,6 @@
 import { EUserRoles, EUserStatus, User } from "../../domain/entities/user";
 import { IUserRepository } from "../../domain/repositories/user-repository";
+import { Password } from "../../domain/value-objects/password";
 import { prisma } from "../database/prisma-client";
 
 export class UserRepositoryPrisma implements IUserRepository {
@@ -9,7 +10,7 @@ export class UserRepositoryPrisma implements IUserRepository {
                 id: user.id,
                 name: user.name,
                 email: user.email.value,
-                password: user.password.value,
+                password: user.password,
                 role: user.role,
             }
         });
@@ -21,16 +22,18 @@ export class UserRepositoryPrisma implements IUserRepository {
             data: {
                 name: user.name,
                 email: user.email.value,
-                password: user.password.value,
+                password: user.password,
                 status: user.status
             }
         });
+
+        const newPassword = new Password(userUpdated.password);
 
         return User.restore({
             id: userUpdated.id,
             name: userUpdated.name,
             email: userUpdated.email,
-            password: userUpdated.password,
+            password: newPassword,
             role: userUpdated.role as EUserRoles,
             status: userUpdated.status as EUserStatus,
             createdAt: userUpdated.createdAt
@@ -45,10 +48,12 @@ export class UserRepositoryPrisma implements IUserRepository {
         const data = await prisma.appUser.findUnique({ where: { id } })
         if (!data) return null;
 
+        const newPassword = new Password(data.password);
+
         return new User(
             data.name,
             data.email,
-            data.password,
+            newPassword,
             undefined,
             data.id,
             data.role as EUserRoles,

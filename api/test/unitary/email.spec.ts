@@ -20,7 +20,7 @@ describe('Plano de Testes - Objeto de Valor Email', () => {
             'teste.com.br',
             'fulano1234',
             'email',
-            '@isaque.com.br',
+            '@ciclano.com.br',
             'vaiDARerraD0'
         ];
 

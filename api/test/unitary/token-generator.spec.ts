@@ -17,8 +17,8 @@ describe('Plano de Teste - Servico de Geração de Token', () => {
 
         const jwtAdapter: JWTAdapter = new JWTAdapter();
 
-        const userId = 'c079bba1-2284-42dd-84d2-9b4f53411afd';
-        const email = 'admin@adm.com';
+        const userId = '78760479-0aef-4361-80b7-0f27a2423182';
+        const email = 'fulano.tal@email.com';
         const generate = jwtAdapter.generate(userId, email);
         const verify = jwtAdapter.verify(generate);
 

@@ -1,8 +1,10 @@
 export class Password {
     private _value: string
-    
+
     constructor(value: string) {
-        if (!this.isValid(value)) throw new Error('The password is not valid.');
+        if (!this.isValid(value)) {
+            throw new Error('The password is not valid.');
+        }
 
         this._value = value;
     }

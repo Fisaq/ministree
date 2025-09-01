@@ -20,23 +20,25 @@ export class CreateUserUseCase {
         const userExisting = await this._userRepo.count();
         const role = userExisting == 0 ? EUserRoles.ADMIN : EUserRoles.VOLUNTARY;
         const status = EUserStatus.PENDING;
-
-        const newPassword = new Password(data.password);
-        const passwordHashed = await this._encryption.hash(newPassword.value);
-
         const userId = this._uuidGenerator;
+        const newPassword = new Password(data.password)
 
         const user = User.create({
             name: data.name,
             email: data.email,
-            password: passwordHashed,
+            password: newPassword,
             role: role,
             status: status
         }, userId);
+
+        const hashedPassword = await this._encryption.hash(newPassword.value);
+        user.changePassword(hashedPassword);
 
         const token = this._token.generate(user.id, user.email.value);
 
         await this._emailService.sendVerificationEmail(user.email.value, token);
         await this._userRepo.save(user);
+
+        return user;
     }
 }

@@ -27,7 +27,7 @@ export class UserRepositoryPrisma implements IUserRepository {
             }
         });
 
-        const newPassword = new Password(userUpdated.password);
+        const newPassword = Password.fromHash(userUpdated.password);
 
         return User.restore({
             id: userUpdated.id,
@@ -48,7 +48,7 @@ export class UserRepositoryPrisma implements IUserRepository {
         const data = await prisma.appUser.findUnique({ where: { id } })
         if (!data) return null;
 
-        const newPassword = new Password(data.password);
+        const newPassword = Password.fromHash(data.password);
 
         return new User(
             data.name,

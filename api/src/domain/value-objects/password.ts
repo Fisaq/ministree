@@ -1,12 +1,16 @@
 export class Password {
     private _value: string
 
-    constructor(value: string) {
-        if (!this.isValid(value)) {
+    constructor(value: string, skipValidation = false) {
+        if (!skipValidation && !this.isValid(value)) {
             throw new Error('The password is not valid.');
         }
 
         this._value = value;
+    }
+
+    static fromHash(hash: string): Password {
+        return new Password(hash, true);
     }
 
     get value(): string {

@@ -14,7 +14,8 @@ export class VerifyUserEmailUseCase {
             if (user.status === EUserStatus.ACTIVE) return user;
 
             user.activate();
-            await this._userRepo.update(user);
+            const updatedUser = await this._userRepo.update(user);
+            return updatedUser;
         } catch (error) {
             throw new Error('Verification failed. Invalid token or expired.');
         }

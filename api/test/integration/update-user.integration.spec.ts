@@ -15,7 +15,7 @@ describe('Teste de Integração - Fluxo de Criação do Usuário', () => {
     it('Deve atualizar um usuário existente através do seu Id', async () => {
         const userExample = {
             name: 'Fulano de Tal',
-            email: 'fulano.tal@email.com',
+            email: 'fulano.update@email.com',
             password: '@MasterPassword123'
         }
 

@@ -1,6 +1,6 @@
 import { Email } from "../../src/domain/value-objects/email";
 
-describe('Plano de Testes - Classe Email', () => {
+describe('Plano de Testes - Objeto de Valor Email', () => {
     it('deve retornar um email válido', () => {
         const emails = [
             'fulano@email.com',
@@ -10,8 +10,8 @@ describe('Plano de Testes - Classe Email', () => {
         ];
 
         for (let email of emails) {
-            const resultado = new Email(email);
-            expect(resultado.value).toBe(email);
+            const result = new Email(email);
+            expect(result.value).toBe(email);
         }
     });
 
@@ -20,7 +20,7 @@ describe('Plano de Testes - Classe Email', () => {
             'teste.com.br',
             'fulano1234',
             'email',
-            '@isaque.com.br',
+            '@ciclano.com.br',
             'vaiDARerraD0'
         ];
 

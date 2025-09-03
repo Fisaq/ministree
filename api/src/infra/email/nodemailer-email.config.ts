@@ -19,7 +19,7 @@ export class NodemailerEmailConfiguration implements IEmailService {
         });
     }
 
-    public async sendVerificationEmail(email: string, token: string): Promise<void> {
+    public async sendVerificationEmail(email: string, token: string): Promise<any> {
         const link = `http://localhost:3000/users/verify-email?token=${token}`;
         const info = await this._transporter.sendMail({
             from: 'Email Test: <test@example.com>',
@@ -29,5 +29,6 @@ export class NodemailerEmailConfiguration implements IEmailService {
         });
 
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        return info;
     }
 }

@@ -16,7 +16,7 @@ export enum EUserStatus {
 export class User {
     private readonly _id: string;
     private _email: Email;
-    private _passwordHashed: Password;
+    private _password: string;
     private _name: string;
     private _role: string;
     private _status: string;
@@ -25,7 +25,7 @@ export class User {
     constructor(
         name: string,
         email: string,
-        password: string,
+        password: Password,
         idGenerator?: IIdGenerator,
         id?: string,
         role?: EUserRoles,
@@ -34,7 +34,7 @@ export class User {
     ) {
         this._email = new Email(email);
         this._name = name;
-        this._passwordHashed = new Password(password);
+        this._password = password.value;
         this._id = id ?? idGenerator?.generate() ?? '';
         this._role = role ?? EUserRoles.VOLUNTARY;
         this._status = status ?? EUserStatus.PENDING;
@@ -59,7 +59,7 @@ export class User {
     }
 
     get password() {
-        return this._passwordHashed
+        return this._password
     }
 
     get status() {
@@ -78,8 +78,8 @@ export class User {
         this._name = value;
     }
 
-    public changePassword(value: string) {
-        this._passwordHashed = new Password(value);
+    public changePassword(hashedPassword: string) {
+        this._password = hashedPassword;
     }
 
     public changeEmail(value: string) {
@@ -89,7 +89,7 @@ export class User {
     public static create(props: {
         name: string;
         email: string;
-        password: string;
+        password: Password;
         role?: EUserRoles;
         status: EUserStatus
     }, idGenerator: IIdGenerator): User {
@@ -108,7 +108,7 @@ export class User {
         id: string;
         name: string;
         email: string;
-        password: string;
+        password: Password;
         role: EUserRoles;
         status: EUserStatus;
         createdAt: Date;

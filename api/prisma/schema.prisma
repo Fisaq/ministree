@@ -13,12 +13,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model AppChurch {
+  id      Int       @id @default(autoincrement())
+  name    String
+  users   AppUser[]
+}
+
 model AppUser {
-  id        String   @id @default(uuid())
+  id        String     @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String     @unique
   password  String
-  role      String
-  status    String   @default("P") // nova coluna
-  createdAt DateTime @default(now())
+  role      Int
+  status    String     @default("P")
+  churchId  Int
+  church    AppChurch  @relation(fields: [churchId], references: [id])
+  createdAt DateTime   @default(now())
 }

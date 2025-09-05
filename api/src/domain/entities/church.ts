@@ -1,14 +1,10 @@
-import { IIdGenerator } from "../services/id-generator";
-
 export class Church {
-    private readonly _id: string;
+    private readonly _id: number;
     private _name: string;
-    private _ministriesAmount: number;
 
-    constructor(name: string, idGenerator: IIdGenerator, id?: string) {
-        this._id = id ?? idGenerator.generate();
+    constructor(id: number, name: string) {
+        this._id = id;
         this._name = name;
-        this._ministriesAmount = 5;
     }
 
     get id() {
@@ -19,15 +15,21 @@ export class Church {
         return this._name;
     }
 
-    get ministrieAmount() {
-        return this._ministriesAmount;
-    }
-
     public changeChurchName(value: string) {
         this._name = value;
     }
 
-    public changeMinistriesAmount(value: number) {
-        this._ministriesAmount = value;
+    public static create(churchName: string) {
+        return new Church(0, churchName);
+    }
+
+    public static restore(props: {
+        churchId: number,
+        name: string,
+    }): Church {
+        return new Church(
+            props.churchId,
+            props.name,
+        );
     }
 }

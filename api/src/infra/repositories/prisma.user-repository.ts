@@ -1,4 +1,4 @@
-import { EUserRoles, EUserStatus, User } from "../../domain/entities/user";
+import { EUserStatus, User } from "../../domain/entities/user";
 import { IUserRepository } from "../../domain/repositories/user-repository";
 import { Password } from "../../domain/value-objects/password";
 import { prisma } from "../database/prisma-client";
@@ -11,7 +11,8 @@ export class UserRepositoryPrisma implements IUserRepository {
                 name: user.name,
                 email: user.email.value,
                 password: user.password,
-                role: user.role,
+                role: user.roleId,
+                churchId: user.churchId
             }
         });
     }
@@ -31,10 +32,11 @@ export class UserRepositoryPrisma implements IUserRepository {
 
         return User.restore({
             id: userUpdated.id,
+            churchId: userUpdated.churchId,
             name: userUpdated.name,
             email: userUpdated.email,
             password: newPassword,
-            role: userUpdated.role as EUserRoles,
+            roleId: userUpdated.role,
             status: userUpdated.status as EUserStatus,
             createdAt: userUpdated.createdAt
         });
@@ -51,12 +53,13 @@ export class UserRepositoryPrisma implements IUserRepository {
         const newPassword = Password.fromHash(data.password);
 
         return new User(
+            data.churchId,
             data.name,
             data.email,
             newPassword,
+            data.role,
             undefined,
             data.id,
-            data.role as EUserRoles,
             data.status as EUserStatus,
             data.createdAt
         )

@@ -2,12 +2,6 @@ import { IIdGenerator } from "../services/id-generator";
 import { Email } from "../value-objects/email";
 import { Password } from "../value-objects/password";
 
-export enum EUserRoles {
-    ADMIN = 'A',
-    MINISTER = 'M',
-    VOLUNTARY = 'V'
-}
-
 export enum EUserStatus {
     ACTIVE = 'A',
     PENDING = 'P'
@@ -15,28 +9,31 @@ export enum EUserStatus {
 
 export class User {
     private readonly _id: string;
+    private _churchId: number;
     private _email: Email;
     private _password: string;
     private _name: string;
-    private _role: string;
+    private _roleId: number;
     private _status: string;
     private _createdAt: Date;
 
     constructor(
+        churchId: number,
         name: string,
         email: string,
         password: Password,
+        roleId: number,
         idGenerator?: IIdGenerator,
         id?: string,
-        role?: EUserRoles,
         status?: EUserStatus,
         createdAt?: Date
     ) {
+        this._churchId = churchId;
         this._email = new Email(email);
         this._name = name;
         this._password = password.value;
-        this._id = id ?? idGenerator?.generate() ?? '';
-        this._role = role ?? EUserRoles.VOLUNTARY;
+        this._id = id ?? idGenerator?.generateUUID() ?? '';
+        this._roleId = roleId;
         this._status = status ?? EUserStatus.PENDING;
         this._createdAt = createdAt ?? new Date();
     }
@@ -54,8 +51,8 @@ export class User {
         return this._email
     }
 
-    get role() {
-        return this._role
+    get roleId() {
+        return this._roleId
     }
 
     get password() {
@@ -68,6 +65,10 @@ export class User {
 
     get createdAt() {
         return this._createdAt
+    }
+
+    get churchId() {
+        return this._churchId
     }
 
     public activate() {
@@ -87,39 +88,43 @@ export class User {
     }
 
     public static create(props: {
-        name: string;
-        email: string;
-        password: Password;
-        role?: EUserRoles;
+        churchId: number,
+        name: string,
+        email: string,
+        password: Password,
+        roleId: number,
         status: EUserStatus
     }, idGenerator: IIdGenerator): User {
         return new User(
+            props.churchId,
             props.name,
             props.email,
             props.password,
+            props.roleId,
             idGenerator,
             undefined,
-            props.role ?? EUserRoles.VOLUNTARY,
             props.status
         );
     }
 
     public static restore(props: {
-        id: string;
-        name: string;
-        email: string;
-        password: Password;
-        role: EUserRoles;
-        status: EUserStatus;
-        createdAt: Date;
+        id: string,
+        churchId: number,
+        name: string,
+        email: string,
+        password: Password,
+        roleId: number,
+        status: EUserStatus,
+        createdAt: Date,
     }): User {
         return new User(
+            props.churchId,
             props.name,
             props.email,
             props.password,
+            props.roleId,
             undefined,
             props.id,
-            props.role,
             props.status
         );
     }

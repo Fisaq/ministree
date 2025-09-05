@@ -5,13 +5,13 @@ import { NodemailerEmailConfiguration } from "../infra/email/nodemailer-email.co
 import { UserRepositoryPrisma } from "../infra/repositories/prisma.user-repository";
 import { BcryptAdapter } from "../services/bcrypt-adapter";
 import { JWTAdapter } from "../services/jwt-adapter";
-import { UUIDGenerator } from "../services/uuid-generator";
+import { IdGenerator } from "../services/id-generator";
 
 export async function bootstrap() {
     const userRepo = new UserRepositoryPrisma();
     const jwtToken = new JWTAdapter();
     const encryption = new BcryptAdapter();
-    const uuidGenerator = new UUIDGenerator();
+    const uuidGenerator = new IdGenerator();
     const emailService = new NodemailerEmailConfiguration();
     await emailService.init();
 

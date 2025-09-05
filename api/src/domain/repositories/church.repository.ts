@@ -1,6 +1,6 @@
 import { Church } from "../entities/church";
 
 export interface IChurchRepository {
-    save(church: Church): Promise<Church>;
-    update(id: string): Promise<Church>
+    save(church: Church): Promise<void>;
+    update(church: Church): Promise<Church>
 }

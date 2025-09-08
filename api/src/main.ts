@@ -12,13 +12,15 @@ async function startServer() {
     const {
         createUserUseCase,
         updateUserUseCase,
-        verifyEmailUseCase
+        verifyEmailUseCase,
+        authenticateUserUseCase
     } = await bootstrap();
 
     const userController = new UserController(
         createUserUseCase,
         updateUserUseCase,
-        verifyEmailUseCase
+        verifyEmailUseCase,
+        authenticateUserUseCase
     );
 
     app.use('/users', userRoutes(userController));

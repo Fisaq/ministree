@@ -47,7 +47,7 @@ export class UserRepositoryPrisma implements IUserRepository {
     }
 
     public async findById(id: string): Promise<User | null> {
-        const data = await prisma.appUser.findUnique({ where: { id } })
+        const data = await prisma.appUser.findUnique({ where: { id } });
         if (!data) return null;
 
         const newPassword = Password.fromHash(data.password);
@@ -62,6 +62,25 @@ export class UserRepositoryPrisma implements IUserRepository {
             data.id,
             data.status as EUserStatus,
             data.createdAt
-        )
+        );
+    }
+
+    public async findByEmail(email: string): Promise<User | null> {
+        const data = await prisma.appUser.findUnique({ where: { email } });
+        if (!data) return null;
+
+        const newPassword = Password.fromHash(data.password);
+
+        return new User(
+            data.churchId,
+            data.name,
+            data.email,
+            newPassword,
+            data.role,
+            undefined,
+            data.id,
+            data.status as EUserStatus,
+            data.createdAt
+        );
     }
 }

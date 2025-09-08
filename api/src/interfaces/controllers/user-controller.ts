@@ -5,7 +5,8 @@ export class UserController {
     constructor(
         private _createUserUseCase: any,
         private _updateUserUseCase: any,
-        private _verifyUserUseCase: any
+        private _verifyUserUseCase: any,
+        private _authenticateUserUseCase: any
     ) { }
 
     public async register(req: Request, res: Response): Promise<Response> {
@@ -31,6 +32,16 @@ export class UserController {
             return res.status(200).json({ message: 'User created successfuly!' })
         } catch (error: any) {
             return res.status(400).json({ error: error.message });
+        }
+    }
+
+    public async authenticate(req: Request, res: Response) {
+        try {
+            const { email, password } = req.body;
+            const response = await this._authenticateUserUseCase.execute({ email, password });
+            return res.status(200).json(response);
+        } catch (error: any) {
+            return res.status(400).json({ error: error.message })
         }
     }
 

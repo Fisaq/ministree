@@ -6,12 +6,13 @@ import { UserRepositoryPrisma } from "../infra/repositories/prisma.user-reposito
 import { BcryptAdapter } from "../services/bcrypt-adapter";
 import { JWTAdapter } from "../services/jwt-adapter";
 import { IdGenerator } from "../services/id-generator";
+import { AuthenticateUserUseCase } from "../domain/use-cases/user/authenticate-user/authenticate-user.use-case";
 
 export async function bootstrap() {
     const userRepo = new UserRepositoryPrisma();
     const jwtToken = new JWTAdapter();
     const encryption = new BcryptAdapter();
-    const uuidGenerator = new IdGenerator();
+    const idGenerator = new IdGenerator();
     const emailService = new NodemailerEmailConfiguration();
     await emailService.init();
 
@@ -20,20 +21,22 @@ export async function bootstrap() {
         jwtToken,
         emailService,
         encryption,
-        uuidGenerator
+        idGenerator
     );
 
     const updateUserUseCase = new UpdateUserUseCase(userRepo);
     const verifyEmailUseCase = new VerifyUserEmailUseCase(userRepo, jwtToken);
+    const authenticateUserUseCase = new AuthenticateUserUseCase(userRepo, encryption, jwtToken);
 
     return {
         userRepo,
         jwtToken,
         encryption,
-        uuidGenerator,
+        idGenerator,
         emailService,
         createUserUseCase,
         updateUserUseCase,
-        verifyEmailUseCase
+        verifyEmailUseCase,
+        authenticateUserUseCase
     };
 }

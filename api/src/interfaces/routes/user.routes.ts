@@ -8,6 +8,7 @@ export function userRoutes(userController: UserController) {
     router.post('/createUser', userController.createUser.bind(userController));
     router.put('/update/:id', userController.update.bind(userController));
     router.get('/verify-email', userController.verifyEmail.bind(userController));
+    router.post('/login', userController.authenticate.bind(userController));
 
     return router;
 }

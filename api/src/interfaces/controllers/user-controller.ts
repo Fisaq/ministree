@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { AuthenticatedRequest } from "../../middlewares/auth.middleware";
 
 export class UserController {
     constructor(
@@ -9,8 +10,24 @@ export class UserController {
 
     public async register(req: Request, res: Response): Promise<Response> {
         try {
+            const { name, email, password, churchId } = req.body;
+            await this._createUserUseCase.execute(null, { name, email, password }, churchId);
+            return res.status(200).json({ message: 'User created successfuly!' })
+        } catch (error: any) {
+            return res.status(400).json({ error: error.message });
+        }
+    }
+
+    public async createUser(req: AuthenticatedRequest, res: Response): Promise<Response> {
+        try {
             const { name, email, password } = req.body;
-            await this._createUserUseCase.execute({ name, email, password });
+            const { currentUser } = req
+
+            if (!currentUser) {
+                return res.status(401).json({ error: 'Unauthorized' });
+            }
+
+            await this._createUserUseCase.execute(currentUser!, { name, email, password });
             return res.status(200).json({ message: 'User created successfuly!' })
         } catch (error: any) {
             return res.status(400).json({ error: error.message });

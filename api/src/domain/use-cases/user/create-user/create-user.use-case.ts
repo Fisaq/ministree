@@ -18,7 +18,7 @@ export class CreateUserUseCase {
         private readonly _uuidGenerator: IIdGenerator,
     ) { }
 
-    public async execute(currentUser: User, data: ICreateUserInputDTO, churchId?: number) {
+    public async execute(currentUser: User | null, data: ICreateUserInputDTO, churchId?: number) {
         let role: Role;
 
         if (!currentUser) {
@@ -38,7 +38,7 @@ export class CreateUserUseCase {
                 role = RoleFactory.createVoluntaryRole();
             }
             else {
-                throw new Error('Voluntary not have permission to create a user.');
+                throw new Error('Voluntary do not have permission to create a user.');
             }
         }
 

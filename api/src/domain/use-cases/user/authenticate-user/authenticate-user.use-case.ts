@@ -7,7 +7,7 @@ export class AuthenticateUserUseCase {
     constructor(
         private _userRepo: IUserRepository,
         private _encrypter: IEncryption,
-        private _idGenerator: ITokenGenerator
+        private _tokenGenerator: ITokenGenerator
     ) { }
 
     public async execute(data: IAuthenticateUserInputDTO) {
@@ -19,7 +19,7 @@ export class AuthenticateUserUseCase {
 
         if (!matchPassword) throw new Error('Invalid credentials. Incoret password.');
 
-        const token = this._idGenerator.generate(user.id, user.email.value);
+        const token = this._tokenGenerator.generate(user.id, user.email.value);
 
         return { token };
     }

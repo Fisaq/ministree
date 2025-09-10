@@ -3,7 +3,6 @@ import { EUserStatus, User } from "../domain/entities/user";
 import { JWTAdapter } from "../services/jwt-adapter";
 import { prisma } from "../infra/database/prisma-client";
 import { Password } from "../domain/value-objects/password";
-import { IdGenerator } from "../services/id-generator";
 
 export interface AuthenticatedRequest extends Request {
     currentUser?: User;
@@ -29,16 +28,16 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
             return res.status(404).json({ error: 'User not found!' });
         }
 
-        const idGenerator = new IdGenerator();
-
-        const currentUser = User.create({
+        const currentUser = User.restore({
+            id: dbUser.id,
             churchId: dbUser.churchId,
             name: dbUser.name,
             email: dbUser.email,
-            password: new Password(dbUser.password),
+            password: Password.fromHash(dbUser.password),
             roleId: dbUser.role,
             status: dbUser.status as EUserStatus,
-        }, idGenerator);
+            createdAt: dbUser.createdAt,
+        });
 
         req.currentUser = currentUser;
 

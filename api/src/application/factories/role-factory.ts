@@ -24,4 +24,12 @@ export class RoleFactory {
             accessType: EAccessType.JUST_READING
         } as Role
     }
+
+    public static createTemporaryRole(): Role {
+        return {
+            id: ERoleId.TEMPORARY,
+            name: ERoleName.TEMPORARY,
+            accessType: EAccessType.READING_AND_EDITING
+        } as Role
+    }
 }

@@ -9,7 +9,7 @@ export enum EUserStatus {
 
 export class User {
     private readonly _id: string;
-    private _churchId: number;
+    private _churchId: number | undefined;
     private _email: Email;
     private _password: string;
     private _name: string;
@@ -18,17 +18,17 @@ export class User {
     private _createdAt: Date;
 
     constructor(
-        churchId: number,
         name: string,
         email: string,
         password: Password,
         roleId: number,
+        churchId?: number | undefined,
         idGenerator?: IIdGenerator,
         id?: string,
         status?: EUserStatus,
         createdAt?: Date
     ) {
-        this._churchId = churchId;
+        this._churchId = churchId ?? undefined;
         this._email = new Email(email);
         this._name = name;
         this._password = password.value;
@@ -88,19 +88,19 @@ export class User {
     }
 
     public static create(props: {
-        churchId: number,
         name: string,
         email: string,
         password: Password,
         roleId: number,
+        churchId: number | undefined,
         status: EUserStatus
     }, idGenerator: IIdGenerator): User {
         return new User(
-            props.churchId,
             props.name,
             props.email,
             props.password,
             props.roleId,
+            props.churchId,
             idGenerator,
             undefined,
             props.status
@@ -109,20 +109,20 @@ export class User {
 
     public static restore(props: {
         id: string,
-        churchId: number,
         name: string,
         email: string,
         password: Password,
         roleId: number,
+        churchId: number | undefined,
         status: EUserStatus,
         createdAt: Date,
     }): User {
         return new User(
-            props.churchId,
             props.name,
             props.email,
             props.password,
             props.roleId,
+            props.churchId,
             undefined,
             props.id,
             props.status

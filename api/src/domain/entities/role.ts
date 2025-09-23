@@ -1,13 +1,15 @@
 export enum ERoleId {
     ADMIN = 1001,
     MINISTER = 2001,
-    VOLUNTARY = 3001
+    VOLUNTARY = 3001,
+    TEMPORARY = 0,
 }
 
 export enum ERoleName {
     ADMIN = 'A',
     MINISTER = 'M',
-    VOLUNTARY = 'V'
+    VOLUNTARY = 'V',
+    TEMPORARY = 'T'
 }
 
 export enum EAccessType {

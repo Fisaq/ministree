@@ -30,7 +30,7 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
 
         const currentUser = User.restore({
             id: dbUser.id,
-            churchId: dbUser.churchId,
+            churchId: dbUser.churchId ?? undefined,
             name: dbUser.name,
             email: dbUser.email,
             password: Password.fromHash(dbUser.password),

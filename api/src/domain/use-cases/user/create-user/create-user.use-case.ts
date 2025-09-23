@@ -18,14 +18,13 @@ export class CreateUserUseCase {
         private readonly _uuidGenerator: IIdGenerator,
     ) { }
 
-    public async execute(currentUser: User | null, data: ICreateUserInputDTO, churchId?: number) {
+    public async execute(currentUser: User | null, data: ICreateUserInputDTO) {
         let role: Role;
+        let churchId: number | undefined;
 
         if (!currentUser) {
-            if (!churchId) {
-                throw new Error("Is necessary create a new Church before create a new User.");
-            }
-            role = RoleFactory.createAdminRole();
+            role = RoleFactory.createTemporaryRole();
+            churchId = undefined;
         }
 
         else {
@@ -38,7 +37,7 @@ export class CreateUserUseCase {
                 role = RoleFactory.createVoluntaryRole();
             }
             else {
-                throw new Error('Voluntary do not have permission to create a user.');
+                throw new Error('Voluntary or Temporary users don`t have permission to create a new user.');
             }
         }
 
@@ -47,11 +46,11 @@ export class CreateUserUseCase {
         const newPassword = new Password(data.password);
 
         const user = User.create({
-            churchId: churchId,
             name: data.name,
             email: data.email,
             password: newPassword,
             roleId: role.id,
+            churchId: churchId,
             status: status
         }, userId);
 

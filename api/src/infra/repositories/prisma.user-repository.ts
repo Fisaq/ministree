@@ -12,7 +12,7 @@ export class UserRepositoryPrisma implements IUserRepository {
                 email: user.email.value,
                 password: user.password,
                 role: user.roleId,
-                churchId: user.churchId
+                churchId: user.churchId ?? undefined
             }
         });
     }
@@ -32,7 +32,7 @@ export class UserRepositoryPrisma implements IUserRepository {
 
         return User.restore({
             id: userUpdated.id,
-            churchId: userUpdated.churchId,
+            churchId: userUpdated.churchId ?? undefined,
             name: userUpdated.name,
             email: userUpdated.email,
             password: newPassword,
@@ -53,11 +53,11 @@ export class UserRepositoryPrisma implements IUserRepository {
         const newPassword = Password.fromHash(data.password);
 
         return new User(
-            data.churchId,
             data.name,
             data.email,
             newPassword,
             data.role,
+            data.churchId ?? undefined,
             undefined,
             data.id,
             data.status as EUserStatus,
@@ -72,11 +72,11 @@ export class UserRepositoryPrisma implements IUserRepository {
         const newPassword = Password.fromHash(data.password);
 
         return new User(
-            data.churchId,
             data.name,
             data.email,
             newPassword,
             data.role,
+            data.churchId ?? undefined,
             undefined,
             data.id,
             data.status as EUserStatus,

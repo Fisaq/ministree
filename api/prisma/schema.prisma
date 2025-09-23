@@ -26,7 +26,7 @@ model AppUser {
   password  String
   role      Int
   status    String     @default("P")
-  churchId  Int
-  church    AppChurch  @relation(fields: [churchId], references: [id])
+  churchId  Int?
+  church    AppChurch?  @relation(fields: [churchId], references: [id])
   createdAt DateTime   @default(now())
 }

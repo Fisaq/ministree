@@ -24,6 +24,10 @@ export class UpdateUserUseCase {
             user.changePassword(newPasswordHashed);
         }
 
+        if (data.churchId !== undefined) user.changeChurchId(data.churchId);
+
+        if (data.roleId !== undefined) user.changeRoleId(data.roleId);
+
         return await this._userRepo.update(user);
     }
 }

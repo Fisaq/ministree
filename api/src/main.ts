@@ -2,6 +2,8 @@ import express from "express";
 import { bootstrap } from "./config/bootstrap";
 import { UserController } from "./interfaces/controllers/user-controller";
 import { userRoutes } from "./interfaces/routes/user.routes";
+import { ChurchController } from "./interfaces/controllers/church-controller";
+import { churchRoutes } from "./interfaces/routes/church.routes";
 
 async function startServer() {
     const app = express();
@@ -13,7 +15,8 @@ async function startServer() {
         createUserUseCase,
         updateUserUseCase,
         verifyEmailUseCase,
-        authenticateUserUseCase
+        authenticateUserUseCase,
+        createChurchUseCase
     } = await bootstrap();
 
     const userController = new UserController(
@@ -23,11 +26,12 @@ async function startServer() {
         authenticateUserUseCase
     );
 
+    const churchController = new ChurchController(createChurchUseCase);
+
     app.use('/users', userRoutes(userController));
+    app.use('/church', churchRoutes(churchController))
 
     app.listen(PORT, () => console.info(`Server running on  http://localhost:${PORT}.`));
 }
 
 startServer();
-
-

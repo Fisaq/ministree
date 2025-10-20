@@ -87,6 +87,14 @@ export class User {
         this._email = new Email(value);
     }
 
+    public changeChurchId(value: number) {
+        this._churchId = value;
+    }
+
+    public changeRoleId(value: number) {
+        this._roleId = value;
+    }
+
     public static create(props: {
         name: string,
         email: string,

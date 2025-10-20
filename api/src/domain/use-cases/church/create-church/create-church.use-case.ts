@@ -22,16 +22,17 @@ export class CreateChurchUseCase {
 
         const userUpdated = User.restore({
             id: currentUser.id,
-            churchId: newChurch.id,
             name: currentUser.name,
             email: currentUser.email.value,
             password: Password.fromHash(currentUser.password),
+            churchId: newChurch.id,
             roleId: userRole.id,
             status: currentUser.status as EUserStatus,
-            createdAt: currentUser.createdAt
+            createdAt: currentUser.createdAt,
         });
 
         await this._userRepo.update(userUpdated);
+
 
         return await this._churchRepo.save(newChurch);
     }

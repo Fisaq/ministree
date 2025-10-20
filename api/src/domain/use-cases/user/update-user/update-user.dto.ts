@@ -3,4 +3,6 @@ export interface IUpdateUserInput {
     name?: string;
     email?: string;
     password?: string;
+    churchId?: number;
+    roleId?: number;
 }

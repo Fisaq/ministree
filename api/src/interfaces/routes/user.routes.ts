@@ -10,6 +10,7 @@ export function userRoutes(userController: UserController) {
     router.put('/update/:id', userController.update.bind(userController));
     router.get('/verify-email', userController.verifyEmail.bind(userController));
     router.post('/login', userController.authenticate.bind(userController));
+    // router.get('/auth/me', userController.getCurrentUser.bind(userController));
 
     return router;
 }

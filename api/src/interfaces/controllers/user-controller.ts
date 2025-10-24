@@ -68,4 +68,13 @@ export class UserController {
             return res.status(400).json({ error: error.message });
         }
     }
+
+    // public async getCurrentUser(req: Request, res: Response): Promise<Response> {
+    //     try {
+    //         await this._getCurrentUserUseCase.execute();
+    //         return res.status(200).json({ message: `Success!` });
+    //     } catch (error: any) {
+    //         return res.status(400).json({ error: error.message });
+    //     }
+    // }
 }
